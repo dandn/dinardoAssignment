@@ -1,0 +1,63 @@
+A) JUnit testing.
+
+Some feedback on the User Stories (tested with JUnit).
+Some comments reflect additional testing that I could have performed given more time.
+
+US01:
+- Ideally we might have some stub for getting some fixed system date (for both the webpage and the test driver): e.g., to avoid the case where the day changes during the test.
+- I assumed that we want the exact value for black here. Otherwise, we need to specify the particular shade of grey in the test plan.
+
+US02:
+- Ideally, I would check with team members what the ideal field length for ‘pet name’ and ‘pet status’ in each row should be.
+- Also, should the above items be subject to line wrapping if the text contents exceeds the field space? Maybe we should use the css property: ‘text-overflow: ellipsis’?
+- For narrow screen widths, the delete button could be replaced with an icon (e.g., a trash can icon) to free up additional space for the ‘pet name’ and ‘pet status’ fields.
+- Future tests could be written to verify that no wrapping occurs given realistic field text entries.
+- Future tests could stress test maximum string length allowances.
+
+US03:
+- The test plan doesn’t specify that in the “Create new Pet” box: that “PetName” and “PetStatus” should be blank after the input is validated.
+- In future, the tests can verify that the “Create new Pet” fields are made blank following validation.
+- In the current implementation, duplicate row entries (i.e., having the same ‘pet name’ and ‘pet status’) are allowed: is this by design?
+
+
+US04:
+- If there are a finite number of ‘pet status’ values: shouldn’t we rather use a drop down list? (This applies for the entry of the values as well.)
+- Future tests could test the robustness of the editable fields: e.g., for length or character types.
+- Should we make REST api calls to verify that the changed values are reflected in the database?
+- Future tests could examine the refresh time taken to update a field when the list of pets is very large.
+
+US05:
+- Obvious issue here: The REST API in the description does not match the ‘Swagger definition’. 
+- I assumed that the description in the user story is the correct REST API to test (from observing the web app log.
+-> the ‘Swagger definition’ needs to be updated -> in a work situation I would confer with the developers to investigate/correct the discrepancy. 
+- The ‘GET’ and ‘DELETE’ commands seem to comply with the description of the Swagger of the document (other than the URL not matching exactly).
+- From observation: The ‘PUT’ command updates existing entries
+- From observation: The ‘POST’ command creates new entries.
+- Future tests could execute robustness tests against all of the REST commands: e.g., containing data with invalid formats, trying excessively long entries
+
+GENERAL:
+- My test setup approach:
+	- Before launching each JUnit test I reinitialise the pet store database using REST requests.
+	- Of course I could have also stopped the web server app, copied in a new db.json file, and then restarted.
+
+- My attempts at capturing code coverage:
+	- I tried to enable the JSCover tool to measure code coverage against the web app. I was unable to complete this work.
+		- for my work in progress, see: src/test/java/assignmentQA/AttemptToRunJCover.java
+		- the web app is successfully launched, and tests run, but no coverage data is saved.
+	- I also looked in to using istanbuljs/nyc with no success.
+
+
+B) Performance testing using JMeter.
+
+- I created two scenarios: 
+	1) The ‘PetstoreRESTAPI_PerfTest_1’ scenario that more closely matches the current implementation (where all pets are retrieved from the database following a PUT or POST).
+	2) The ‘PetstoreRESTAPI_PerfTest_2’ scenario that might be a better implementation (where only the entry of the implicated pet in a PUT or POST is retrieved (using a single id)).
+
+- In the ‘performanceTests.sh’ file I currently run two cases for each of the above scenarios: one with 1 user, another with 10 users.
+	- In future, we could try against many more users.
+
+- Before launching each JMeter test I reinitialise the pet store database using REST requests.
+	- I make use of the mvn call (`mvn -Dtest=InitializeTests#testMediumDb test`) that calls a test case specifically designed to perform the initialisation.
+	- Note that I only create a database with 500 pet entries. Future performance testing could be done with much larger databases.
+	- As with the JUnit testing: I could have also stopped the web server app, copied in a new db.json file, and then restarted.
+

@@ -19,7 +19,6 @@ US03:
 - In future, the tests can verify that the “Create new Pet” fields are made blank following validation.
 - In the current implementation, duplicate row entries (i.e., having the same ‘pet name’ and ‘pet status’) are allowed: is this by design?
 
-
 US04:
 - If there are a finite number of ‘pet status’ values: shouldn’t we rather use a drop down list? (This applies for the entry of the values as well.)
 - Future tests could test the robustness of the editable fields: e.g., for length or character types.
@@ -34,6 +33,10 @@ US05:
 - From observation: The ‘PUT’ command updates existing entries
 - From observation: The ‘POST’ command creates new entries.
 - Future tests could execute robustness tests against all of the REST commands: e.g., containing data with invalid formats, trying excessively long entries
+
+For Test cases targeting US01, US02, US03, and US04:
+- the JUnit test cases are parameterized.
+- each JUnit test case is run with the browser window having dimensions 1366 X 768 and 400 X 300.
 
 GENERAL:
 - My test setup approach:

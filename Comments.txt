@@ -46,7 +46,9 @@ GENERAL:
 - My attempts at capturing code coverage:
 	- I tried to enable the JSCover tool to measure code coverage against the web app. I was unable to complete this work.
 		- for my work in progress, see: src/test/java/assignmentQA/AttemptToRunJCover.java
-		- the web app is successfully launched, and tests run, but no coverage data is saved.
+		- the web app is successfully launched, and tests run
+		- I manage to save coverage data to the directory: target/reports/jscover-localstorage-general
+		- TODO: Given the JSON-formatted coverage data, I still need to be able to view the coverage against the source code…
 	- I also looked in to using istanbuljs/nyc with no success.
 
 
